@@ -2,15 +2,17 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"sync"
 )
 
 func main() {
+	l := log.New(os.Stderr, "", 0)
+
 	objects, err := randomObjects("testdata/random_objects.json")
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		l.Fatal(err)
 	}
 
 	doneProducer := make(chan interface{})
@@ -27,8 +29,7 @@ func main() {
 
 	resultFilePath, err := writeResult2File(result.data)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		l.Fatal(err)
 	}
 
 	fmt.Printf("You can check result here: %s\n", resultFilePath)
